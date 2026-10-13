@@ -29,3 +29,694 @@
 
     --text: #1F1330;
     --text-soft: #5B4E6E;
+  }
+
+  html { scroll-padding-top: 84px; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img, svg { max-width: 100%; }
+
+  h1, h2, h3, .display {
+    font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+    margin: 0;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 50;
+    background: rgba(255, 246, 234, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(23, 11, 43, 0.08);
+  }
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    max-width: 1180px;
+    margin: 0 auto;
+    gap: 16px;
+  }
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .logo span { color: var(--magenta); font-style: normal; }
+
+  .wa-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 10px 18px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    white-space: nowrap;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .wa-pill:hover { background: var(--magenta); transform: translateY(-1px); }
+  .wa-pill svg { width: 16px; height: 16px; flex: none; }
+  @media (max-width: 420px) {
+    .wa-pill { font-size: 0.78rem; padding: 8px 12px; }
+    .logo { font-size: 1.15rem; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    background: var(--ink);
+    color: var(--cream);
+    overflow: hidden;
+    padding: 56px 24px 48px;
+  }
+  .hero-blob {
+    position: absolute;
+    inset: -20% -10% -10% -10%;
+    z-index: 0;
+    opacity: 0.9;
+    filter: blur(2px);
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1180px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .hero-eyebrow {
+    font-size: 0.82rem;
+    color: var(--amber);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    color: var(--cream);
+    font-size: clamp(2rem, 5.2vw, 3.7rem);
+    line-height: 1.02;
+    font-weight: 600;
+    max-width: 14ch;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--magenta);
+    background: linear-gradient(90deg, var(--magenta), var(--amber));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p.lede {
+    margin-top: 14px;
+    font-size: 0.98rem;
+    color: #D9CBEE;
+    max-width: 46ch;
+    line-height: 1.55;
+  }
+  .hero-ctas {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .btn-solid {
+    background: var(--cream);
+    color: var(--ink);
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: inline-block;
+  }
+  .btn-outline {
+    border: 1.5px solid rgba(255,246,234,0.4);
+    color: var(--cream);
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: inline-block;
+  }
+
+  /* ---------- Category nav ---------- */
+  .catnav-wrap {
+    background: var(--cream);
+    border-bottom: 1px solid rgba(23,11,43,0.08);
+    position: sticky;
+    top: 61px;
+    z-index: 40;
+  }
+  .catnav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 9px 24px;
+    max-width: 1180px;
+    margin: 0 auto;
+    scrollbar-width: none;
+  }
+  .catnav::-webkit-scrollbar { display: none; }
+  .catnav a {
+    flex: none;
+    font-size: 0.88rem;
+    font-weight: 700;
+    padding: 9px 18px;
+    border-radius: 100px;
+    background: var(--paper);
+    color: var(--text);
+    border: 1px solid rgba(23,11,43,0.1);
+    transition: background 0.15s ease, color 0.15s ease, border-color .15s ease;
+  }
+  .catnav a:hover { border-color: var(--cat-color, var(--magenta)); color: var(--cat-color, var(--magenta)); }
+
+  /* ---------- Category sections ---------- */
+  .category-section { padding: 40px 0; }
+  .category-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  .category-head h2 {
+    font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+    font-weight: 600;
+  }
+  .category-head .num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--cat-color);
+    font-size: 0.9rem;
+  }
+  .category-blurb {
+    color: var(--text-soft);
+    max-width: 52ch;
+    margin-top: 4px;
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .grid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+  .grid::-webkit-scrollbar { display: none; }
+
+  .card {
+    background: var(--paper);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(23,11,43,0.07);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    flex: 0 0 auto;
+    width: calc((100% - 28px) / 4);
+    min-width: 130px;
+    max-width: 165px;
+    scroll-snap-align: start;
+  }
+  @media (max-width: 900px) { .card { width: calc((100% - 16px) / 2.6); } }
+  @media (max-width: 560px) { .card { width: 48%; min-width: 128px; } }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(23,11,43,0.12); }
+
+  .card-media {
+    aspect-ratio: 1 / 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-media svg { width: 40%; }
+
+  .swipe-hint {
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .swipe-hint svg { width: 14px; height: 14px; }
+  .card-media .tag {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    background: rgba(23,11,43,0.55);
+    color: var(--cream);
+    font-size: 0.58rem;
+    font-weight: 700;
+    padding: 4px 7px;
+    border-radius: 100px;
+    letter-spacing: 0.01em;
+    text-align: center;
+  }
+
+  .card-body {
+    padding: 10px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+  }
+  .card-body h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+  .price {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--ink);
+  }
+  .order-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--cat-color);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 100px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: filter 0.15s ease;
+  }
+  .order-btn:hover { filter: brightness(1.08); }
+  .order-btn svg { width: 14px; height: 14px; }
+
+  /* alternate section tints */
+  .tint-1 { background: var(--cream); }
+  .tint-2 { background: var(--paper); }
+
+  /* ---------- About strip ---------- */
+  .about {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 52px 24px;
+  }
+  .about-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  @media (max-width: 800px) { .about-inner { grid-template-columns: 1fr; } }
+  .about h2 {
+    color: var(--cream);
+    font-size: clamp(1.5rem, 2.8vw, 2rem);
+    line-height: 1.15;
+    font-weight: 600;
+  }
+  .about h2 em { color: var(--amber); font-style: italic; }
+  .about p {
+    color: #D9CBEE;
+    line-height: 1.6;
+    margin-top: 12px;
+    font-size: 0.9rem;
+  }
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .stat {
+    background: rgba(255,246,234,0.06);
+    border: 1px solid rgba(255,246,234,0.14);
+    border-radius: 14px;
+    padding: 16px;
+  }
+  .stat .n {
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--amber);
+  }
+  .stat .l { color: #D9CBEE; font-size: 0.88rem; margin-top: 4px; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    background: var(--cream-deep);
+    padding: 36px 24px 26px;
+  }
+  .footer-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  footer .logo { margin-bottom: 8px; }
+  footer .col p, footer .col a { color: var(--text-soft); font-size: 0.92rem; line-height: 1.8; }
+  footer .col a:hover { color: var(--magenta); }
+  footer .col h4 { font-size: 0.82rem; text-transform: none; color: var(--ink); margin-bottom: 10px; font-weight: 700; }
+  .foot-bottom {
+    max-width: 1180px;
+    margin: 40px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid rgba(23,11,43,0.1);
+    font-size: 0.82rem;
+    color: var(--text-soft);
+  }
+
+  /* floating whatsapp */
+  .float-wa {
+    position: fixed;
+    right: 20px;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    z-index: 60;
+    background: #1F1330;
+    color: var(--cream);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 24px rgba(23,11,43,0.35);
+    transition: transform 0.18s ease;
+  }
+  .float-wa:hover { transform: scale(1.07); background: var(--magenta); }
+  .float-wa svg { width: 26px; height: 26px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div class="logo">Rasya <span>Crafts</span></div>
+    <a class="wa-pill" href="https://wa.me/919654432113?text=Hi%20Rasya%20Crafts%2C%20I%27d%20like%20to%20know%20more%20about%20your%20resin%20art." target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.2 4.79 1.2 5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm0 18.2c-1.5 0-2.97-.4-4.25-1.16l-.3-.18-3.12.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.37c0-4.52 3.68-8.2 8.2-8.2 4.52 0 8.2 3.68 8.2 8.2s-3.68 8.24-8.1 8.24z"/></svg>
+      +91 96544 32113
+    </a>
+  </div>
+</header>
+
+<section class="hero">
+  <svg class="hero-blob" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <filter id="swirl">
+        <feTurbulence type="fractalNoise" baseFrequency="0.008 0.014" numOctaves="3" seed="7" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="90"/>
+      </filter>
+      <radialGradient id="g1" cx="30%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="#FF3E80" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#FF3E80" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="g2" cx="75%" cy="60%" r="60%">
+        <stop offset="0%" stop-color="#FFB100" stop-opacity="0.45"/>
+        <stop offset="100%" stop-color="#FFB100" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="g3" cx="55%" cy="15%" r="55%">
+        <stop offset="0%" stop-color="#0FA8A0" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#0FA8A0" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <g filter="url(#swirl)">
+      <rect width="1200" height="800" fill="#170B2B"/>
+      <rect width="1200" height="800" fill="url(#g1)"/>
+      <rect width="1200" height="800" fill="url(#g2)"/>
+      <rect width="1200" height="800" fill="url(#g3)"/>
+    </g>
+  </svg>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Handmade in small batches</div>
+    <h1>Resin art that<br>holds a moment <em>in light</em></h1>
+    <p class="lede">Rasya Crafts pours jewelry, keepsakes and decor by hand — flowers, colour and gold suspended mid-swirl. Every piece is one of a kind.</p>
+    <div class="hero-ctas">
+      <a class="btn-solid" href="#jewelry">Browse the collections</a>
+      <a class="btn-outline" href="https://wa.me/919654432113?text=Hi%20Rasya%20Crafts%2C%20I%27d%20like%20to%20place%20an%20order." target="_blank" rel="noopener">Order on WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<div class="catnav-wrap">
+  <nav class="catnav" id="catnav"></nav>
+</div>
+
+<main id="shop"></main>
+
+<section class="about">
+  <div class="about-inner">
+    <div>
+      <h2>Every swirl is<br><em>poured, not printed</em></h2>
+      <p>Each piece starts as liquid resin, hand-tinted and layered until the colour looks right — then cured, sanded and polished before it leaves the studio. Flowers, photos and keepsakes can be set into almost anything you see here.</p>
+      <p>Based in India, shipping nationwide. Custom colours, sizes and preservation pieces made to order — just message the details on WhatsApp.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat"><div class="n">7</div><div class="l">Collections</div></div>
+      <div class="stat"><div class="n">100%</div><div class="l">Handmade</div></div>
+      <div class="stat"><div class="n">1:1</div><div class="l">One of a kind</div></div>
+      <div class="stat"><div class="n">India</div><div class="l">Wide shipping</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="col">
+      <div class="logo">Rasya <span style="color:var(--magenta)">Crafts</span></div>
+      <p style="max-width:32ch">Handcrafted resin jewelry, decor & keepsakes — made to order.</p>
+    </div>
+    <div class="col">
+      <h4>Shop</h4>
+      <div id="footnav" style="display:flex;flex-direction:column;gap:4px"></div>
+    </div>
+    <div class="col">
+      <h4>Get in touch</h4>
+      <p><a href="https://wa.me/919654432113" target="_blank" rel="noopener">WhatsApp: +91 96544 32113</a></p>
+      <p>Order any piece directly — send the name and we'll confirm price, colour and delivery.</p>
+    </div>
+  </div>
+  <div class="foot-bottom wrap">© 2026 Rasya Crafts. All pieces made to order.</div>
+</footer>
+
+<a class="float-wa" href="https://wa.me/919654432113?text=Hi%20Rasya%20Crafts%2C%20I%27d%20like%20to%20place%20an%20order." target="_blank" rel="noopener" aria-label="Order on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.2 4.79 1.2 5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm0 18.2c-1.5 0-2.97-.4-4.25-1.16l-.3-.18-3.12.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.37c0-4.52 3.68-8.2 8.2-8.2 4.52 0 8.2 3.68 8.2 8.2s-3.68 8.24-8.1 8.24z"/></svg>
+</a>
+
+<script>
+const WA_NUMBER = "919654432113";
+
+// ---- Category & product data (edit names / prices / photos later) ----
+const categories = [
+  {
+    id: "jewelry", name: "Jewelry", color: "var(--magenta)", hex: "#FF3E80",
+    blurb: "Pendants, earrings and rings with flowers, foil and colour set in resin.",
+    products: [
+      ["Ocean Wave Pendant", 450],
+      ["Dried Flower Stud Earrings", 350],
+      ["Galaxy Swirl Ring", 300],
+      ["Gold Flake Drop Earrings", 400],
+      ["Marble Effect Pendant", 420],
+      ["Rose Petal Earrings", 380],
+    ]
+  },
+  {
+    id: "preservation", name: "Photo & Flower Preservation", color: "var(--teal)", hex: "#0FA8A0",
+    blurb: "Wedding flowers, baby keepsakes and photographs, set in resin to last.",
+    products: [
+      ["Custom Photo Frame Block", 899],
+      ["Wedding Flower Preservation Set", 1499],
+      ["Baby's First Curl Keepsake", 999],
+      ["Bridal Bouquet Preservation Dome", 1999],
+      ["Memory Photo Coaster", 599],
+      ["Pressed Flower Bookmark Set", 299],
+    ]
+  },
+  {
+    id: "decor", name: "Home Decor", color: "var(--amber)", hex: "#FFB100",
+    blurb: "Trays, bowls and boxes that bring a poured-colour moment into a room.",
+    products: [
+      ["Ocean Swirl Serving Tray", 1200],
+      ["Geode Trinket Bowl", 850],
+      ["Marble Effect Coaster Set (4pc)", 899],
+      ["Galaxy Jewelry Box", 1500],
+      ["Floral Tea Light Holder", 650],
+      ["Abstract Art Bowl", 950],
+    ]
+  },
+  {
+    id: "keychains", name: "Keychains & Accessories", color: "var(--violet)", hex: "#7C4DFF",
+    blurb: "Small, giftable pieces — initials, flowers and charms you can carry daily.",
+    products: [
+      ["Initial Letter Keychain", 150],
+      ["Flower Preservation Keychain", 180],
+      ["Galaxy Swirl Keychain", 160],
+      ["Photo Charm Keychain", 200],
+      ["Mini Geode Keychain", 170],
+      ["Name Tag Bag Charm", 190],
+    ]
+  },
+  {
+    id: "wallart", name: "Wall Art & Frames", color: "var(--coral)", hex: "#FF6B4A",
+    blurb: "Statement panels and frames for a wall that needs one bold, poured piece.",
+    products: [
+      ["Ocean Sunset Wall Panel", 2200],
+      ["Abstract Swirl Canvas", 1800],
+      ["Floral Resin Frame", 1100],
+      ["Geode Wall Art (Large)", 2500],
+      ["Custom Name Wall Plaque", 1300],
+      ["Marble Effect Wall Clock", 1600],
+    ]
+  },
+  {
+    id: "rakhi", name: "Rakhi", color: "var(--saffron)", hex: "#F2994A",
+    blurb: "Resin rakhis for the season — floral, minimal or made to a name.",
+    products: [
+      ["Floral Resin Rakhi", 150],
+      ["Kids Cartoon Rakhi", 120],
+      ["Pearl & Resin Rakhi", 180],
+      ["Bhaiya-Bhabhi Rakhi Set", 250],
+      ["Minimalist Gold Flake Rakhi", 160],
+      ["Personalized Name Rakhi", 200],
+    ]
+  },
+  {
+    id: "bracelets", name: "Bracelets", color: "var(--sky)", hex: "#2DB3E8",
+    blurb: "Bangles and cuffs in swirled colour, foil and pressed flowers.",
+    products: [
+      ["Ocean Wave Bangle", 400],
+      ["Dried Flower Bracelet", 350],
+      ["Galaxy Swirl Bangle", 380],
+      ["Gold Foil Cuff Bracelet", 420],
+      ["Beaded Resin Bracelet", 300],
+      ["Marble Effect Bangle Set", 650],
+    ]
+  },
+];
+
+function waLink(productName, price, anchorId) {
+  const pageUrl = window.location.href.split('#')[0] + '#' + anchorId;
+  const msg = `Hi Rasya Crafts, I'm interested in this product:\n"${productName}" — ₹${price}\n${pageUrl}\n\nIs it available?`;
+  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+}
+
+function placeholderMedia(hex, seed) {
+  // deterministic pseudo-random-ish swirl placeholder using seed
+  const hueShift = (seed * 47) % 360;
+  return `
+    <div class="card-media" style="background:
+        radial-gradient(120% 120% at 20% 15%, ${hex}55, transparent 60%),
+        radial-gradient(120% 120% at 85% 80%, ${hex}33, transparent 55%),
+        linear-gradient(135deg, #FFF6EA, #FBEBD6);
+        filter: hue-rotate(${hueShift * 0.15}deg);">
+      <span class="tag">Photo coming soon</span>
+      <svg width="46%" viewBox="0 0 100 100" style="opacity:.5">
+        <circle cx="50" cy="50" r="34" fill="none" stroke="${hex}" stroke-width="2.5"/>
+        <circle cx="50" cy="50" r="18" fill="none" stroke="${hex}" stroke-width="1.5" stroke-dasharray="3 4"/>
+      </svg>
+    </div>`;
+}
+
+const shop = document.getElementById('shop');
+const catnav = document.getElementById('catnav');
+const footnav = document.getElementById('footnav');
+
+categories.forEach((cat, ci) => {
+  // nav pill
+  const a = document.createElement('a');
+  a.href = `#${cat.id}`;
+  a.textContent = cat.name;
+  a.style.setProperty('--cat-color', cat.hex);
+  catnav.appendChild(a);
+
+  const fa = document.createElement('a');
+  fa.href = `#${cat.id}`;
+  fa.textContent = cat.name;
+  footnav.appendChild(fa);
+
+  // section
+  const section = document.createElement('section');
+  section.className = `category-section ${ci % 2 === 0 ? 'tint-1' : 'tint-2'}`;
+  section.id = cat.id;
+  section.style.setProperty('--cat-color', cat.hex);
+
+  const cardsHtml = cat.products.map(([name, price], pi) => {
+    const anchorId = `${cat.id}-${pi + 1}`;
+    return `
+    <div class="card" id="${anchorId}" style="cursor:pointer" onclick="window.open('${waLink(name, price, anchorId)}','_blank')">
+      ${placeholderMedia(cat.hex, ci * 6 + pi)}
+      <div class="card-body">
+        <h3>${name}</h3>
+        <div class="price-row">
+          <span class="price">₹${price.toLocaleString('en-IN')}</span>
+          <span class="order-btn" style="--cat-color:${cat.hex}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.2 4.79 1.2 5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm0 18.2c-1.5 0-2.97-.4-4.25-1.16l-.3-.18-3.12.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.37c0-4.52 3.68-8.2 8.2-8.2 4.52 0 8.2 3.68 8.2 8.2s-3.68 8.24-8.1 8.24z"/></svg>
+            Order
+          </span>
+        </div>
+      </div>
+    </div>
+  `;
+  }).join('');
+
+  section.innerHTML = `
+    <div class="wrap">
+      <div class="category-head">
+        <div>
+          <h2>${cat.name}</h2>
+          <p class="category-blurb">${cat.blurb}</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span class="swipe-hint">Swipe to see all 6
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+          </span>
+          <div class="num">${String(ci + 1).padStart(2,'0')} / ${String(categories.length).padStart(2,'0')}</div>
+        </div>
+      </div>
+      <div class="grid">${cardsHtml}</div>
+    </div>
+  `;
+  shop.appendChild(section);
+});
+</script>
+
+</body>
+</html>
