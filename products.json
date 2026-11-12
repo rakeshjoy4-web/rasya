@@ -215,7 +215,7 @@
         {
           "name": "Alphabet key chain",
           "price": 160,
-          "image": "images/product-mwd4kbl2.jpg",
+          "image": "images/alphabet-key-chain-mwd6b0lo.jpg",
           "soldOut": false,
           "hidden": false
         },
@@ -230,6 +230,13 @@
           "name": "New stylish key chain",
           "price": 170,
           "image": "images/product-mwd4ltu1.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Dry Flowers & Gold Fo Keychain",
+          "price": 130,
+          "image": "images/product-mwd6bppc.jpg",
           "soldOut": false,
           "hidden": false
         }
