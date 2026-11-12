@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Rasya Crafts — Admin</title>
+<style>
+  :root {
+    --ink:#170B2B; --cream:#FFF6EA; --paper:#fff; --magenta:#FF3E80;
+    --text:#1F1330; --soft:#5B4E6E; --line:rgba(23,11,43,.14);
+    --ok:#117A4D; --err:#C0262D;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--cream); color:var(--text);
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; font-size:15px; }
+  .wrap { max-width:760px; margin:0 auto; padding:0 14px 90px; }
+
+  .topbar { position:sticky; top:0; z-index:20; background:var(--ink); color:var(--cream); padding:10px 14px; }
+  .topbar-in { max-width:760px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .topbar b { font-size:1rem; }
+  .topbar a { color:var(--cream); font-size:.82rem; opacity:.85; }
+  .status { max-width:760px; margin:6px auto 0; font-size:.82rem; min-height:1.1em; color:#D9CBEE; }
+  .status.ok { color:#7CE3B0; } .status.err { color:#FF9AA0; }
+
+  .panel { background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:14px; margin:12px 0; }
+  details.panel summary { cursor:pointer; font-weight:700; }
+  label { display:block; font-size:.8rem; font-weight:600; color:var(--soft); margin-top:10px; }
+  input[type=text], input[type=number], input[type=password], input:not([type]), textarea {
+    width:100%; padding:10px 12px; margin-top:4px; border:1px solid var(--line); border-radius:10px;
+    font-size:16px; font-family:inherit; background:#fff; color:var(--text); }
+  input[type=color] { width:100%; height:42px; margin-top:4px; border:1px solid var(--line); border-radius:10px; padding:2px; background:#fff; }
+  textarea { resize:vertical; }
+  .grid2 { display:grid; grid-template-columns:1fr 110px; gap:10px; }
+  .hint { font-size:.78rem; color:var(--soft); line-height:1.5; margin:8px 0 0; }
+
+  .btn { display:inline-block; border:1px solid var(--line); background:#fff; color:var(--text); border-radius:100px;
+    padding:10px 16px; font-size:.88rem; font-weight:700; cursor:pointer; font-family:inherit; text-align:center; }
+  .btn.sm { padding:7px 12px; font-size:.78rem; }
+  .btn.primary { background:var(--magenta); border-color:var(--magenta); color:#fff; }
+  .btn.danger { color:var(--err); border-color:rgba(192,38,45,.35); }
+  .btn:disabled { opacity:.4; cursor:default; }
+  .rowbtns { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+
+  .tabs { display:flex; gap:8px; overflow-x:auto; padding:12px 0 4px; scrollbar-width:none; }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab { flex:none; border:1px solid var(--line); background:#fff; color:var(--text); border-radius:100px;
+    padding:8px 14px; font-size:.85rem; font-weight:700; cursor:pointer; font-family:inherit; }
+  .tab .count { margin-left:6px; opacity:.55; font-weight:600; }
+  .tab.on { background:var(--c,var(--ink)); border-color:var(--c,var(--ink)); color:#fff; }
+  .tab.add { border-style:dashed; color:var(--soft); }
+
+  .prod { display:grid; grid-template-columns:84px 1fr; gap:12px; background:#fff; border:1px solid var(--line);
+    border-radius:14px; padding:12px; margin:10px 0; }
+  .prod.dim { opacity:.55; }
+  .thumb { width:84px; height:84px; border-radius:10px; background:#FBEBD6; overflow:hidden; display:flex;
+    align-items:center; justify-content:center; font-size:.7rem; color:var(--soft); text-align:center; }
+  .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+  .fields input[data-f=name] { margin-top:0; }
+  .pricebox { display:flex; align-items:center; gap:6px; margin-top:8px; }
+  .pricebox span { font-weight:700; }
+  .chk { display:flex; gap:16px; margin-top:8px; }
+  .chk label { margin:0; display:flex; align-items:center; gap:6px; font-size:.85rem; color:var(--text); font-weight:600; }
+  .chk input { width:18px; height:18px; }
+
+  .savebar { position:fixed; left:0; right:0; bottom:0; background:#fff; border-top:1px solid var(--line);
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px)); z-index:30; }
+  .savebar-in { max-width:760px; margin:0 auto; display:flex; gap:10px; }
+  .savebar .btn { flex:1; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <b>Rasya Crafts · Admin</b>
+    <a href="index.html" target="_blank" rel="noopener">View website</a>
+  </div>
+  <div class="status" id="status">Loading…</div>
+</div>
+
+<div class="wrap">
+
+  <details class="panel" id="conn">
+    <summary>GitHub connection</summary>
+    <p class="hint">This lets the admin page save your changes directly to your GitHub repository. Your token is stored only in this browser.</p>
+    <label>GitHub username <input id="cOwner" autocomplete="off" autocapitalize="off" placeholder="e.g. rasyacrafts"></label>
+    <label>Repository name <input id="cRepo" autocomplete="off" autocapitalize="off" placeholder="e.g. rasyacrafts.github.io"></label>
+    <label>Branch (leave blank for default) <input id="cBranch" autocomplete="off" autocapitalize="off" placeholder="main"></label>
+    <label>Access token <input id="cToken" type="password" autocomplete="off" placeholder="github_pat_..."></label>
+    <div class="rowbtns">
+      <button class="btn primary" id="connectBtn">Save &amp; connect</button>
+      <button class="btn danger" id="forgetBtn">Forget token</button>
+    </div>
+    <p class="hint"><b>How to get a token:</b> GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token. Under “Repository access” pick <i>Only select repositories</i> and choose this repo. Under “Repository permissions” set <i>Contents</i> to <i>Read and write</i>. Generate, then paste it above.</p>
+    <p class="hint">Anyone can open this page, but nobody can save changes without the token. Don't use it on a shared device.</p>
+  </details>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="catEditor"></div>
+
+  <div class="rowbtns">
+    <button class="btn sm" id="backupBtn">Download products.json backup</button>
+  </div>
+</div>
+
+<div class="savebar">
+  <div class="savebar-in">
+    <button class="btn primary" id="saveBtn" disabled>Save to website</button>
+  </div>
+</div>
+
+<script>
+const DEFAULT_DATA = {
+  "categories": [
+    {
+      "id": "jewelry",
+      "name": "Jewelry",
+      "hex": "#FF3E80",
+      "blurb": "Pendants, earrings and rings with flowers, foil and colour set in resin.",
+      "products": [
+        {
+          "name": "Ocean Wave Pendant",
+          "price": 450,
+          "image": "images/ocean-wave-pendant.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Dried Flower Stud Earrings",
+          "price": 350,
+          "image": "images/dried-flower-stud-earrings.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Galaxy Swirl Ring",
+          "price": 300,
+          "image": "images/galaxy-swirl-ring.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Pressed Vine Drop Earrings",
+          "price": 400,
+          "image": "images/pressed-vine-drop-earrings.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Rose Petal Earrings",
+          "price": 380,
+          "image": "images/rose-petal-earrings.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Gold Flake Drop Earrings",
+          "price": 420,
+          "image": "images/gold-flake-drop-earrings.jpg",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "preservation",
+      "name": "Photo & Flower Preservation",
+      "hex": "#0FA8A0",
+      "blurb": "Wedding flowers, baby keepsakes and photographs, set in resin to last.",
+      "products": [
+        {
+          "name": "Custom Photo Frame Block",
+          "price": 899,
+          "image": "images/custom-photo-frame-block.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Wedding Flower Preservation Set",
+          "price": 1499,
+          "image": "images/wedding-flower-preservation-set.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Baby's First Curl Keepsake",
+          "price": 999,
+          "image": "images/babys-first-curl-keepsake.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Bridal Bouquet Preservation Dome",
+          "price": 1999,
+          "image": "images/bridal-bouquet-preservation-dome.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Memory Photo Coaster",
+          "price": 599,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Pressed Flower Bookmark Set",
+          "price": 299,
+          "image": "images/pressed-flower-bookmark-set.jpg",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "decor",
+      "name": "Home Decor",
+      "hex": "#FFB100",
+      "blurb": "Trays, bowls and boxes that bring a poured-colour moment into a room.",
+      "products": [
+        {
+          "name": "Ocean Swirl Serving Tray",
+          "price": 1200,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Geode Trinket Bowl",
+          "price": 850,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Marble Effect Coaster Set (4pc)",
+          "price": 899,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Galaxy Jewelry Box",
+          "price": 1500,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Floral Tea Light Holder",
+          "price": 650,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Abstract Art Bowl",
+          "price": 950,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "keychains",
+      "name": "Keychains & Accessories",
+      "hex": "#7C4DFF",
+      "blurb": "Small, giftable pieces — initials, flowers and charms you can carry daily.",
+      "products": [
+        {
+          "name": "Initial Letter Keychain",
+          "price": 150,
+          "image": "images/initial-letter-keychain.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Flower Preservation Keychain",
+          "price": 180,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Galaxy Swirl Keychain",
+          "price": 160,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Photo Charm Keychain",
+          "price": 200,
+          "image": "images/photo-charm-keychain.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Mini Geode Keychain",
+          "price": 170,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Name Tag Bag Charm",
+          "price": 190,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "wallart",
+      "name": "Wall Art & Frames",
+      "hex": "#FF6B4A",
+      "blurb": "Statement panels and frames for a wall that needs one bold, poured piece.",
+      "products": [
+        {
+          "name": "Ocean Sunset Wall Panel",
+          "price": 2200,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Abstract Swirl Canvas",
+          "price": 1800,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Floral Resin Frame",
+          "price": 1100,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Geode Wall Art (Large)",
+          "price": 2500,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Custom Name Wall Plaque",
+          "price": 1300,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Marble Effect Wall Clock",
+          "price": 1600,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "rakhi",
+      "name": "Rakhi",
+      "hex": "#F2994A",
+      "blurb": "Resin rakhis for the season — floral, minimal or made to a name.",
+      "products": [
+        {
+          "name": "Floral Resin Rakhi",
+          "price": 150,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Kids Cartoon Rakhi",
+          "price": 120,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Pearl & Resin Rakhi",
+          "price": 180,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Bhaiya-Bhabhi Rakhi Set",
+          "price": 250,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Minimalist Gold Flake Rakhi",
+          "price": 160,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Personalized Name Rakhi",
+          "price": 200,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "bracelets",
+      "name": "Bracelets",
+      "hex": "#2DB3E8",
+      "blurb": "Bangles and cuffs in swirled colour, foil and pressed flowers.",
+      "products": [
+        {
+          "name": "Ocean Wave Bangle",
+          "price": 400,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Dried Flower Bracelet",
+          "price": 350,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Galaxy Swirl Bangle",
+          "price": 380,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Gold Foil Cuff Bracelet",
+          "price": 420,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Beaded Resin Bracelet",
+          "price": 300,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Marble Effect Bangle Set",
+          "price": 650,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    }
+  ]
+};
+
+const LS_KEY = 'rasya_admin_cfg_v1';
+const PALETTE = ['#FF3E80','#0FA8A0','#FFB100','#7C4DFF','#FF6B4A','#F2994A','#2DB3E8'];
+let cfg = { owner:'', repo:'', branch:'', token:'' };
+try { Object.assign(cfg, JSON.parse(localStorage.getItem(LS_KEY) || '{}')); } catch (e) {}
+
+let data = null, sha = null, dirty = false, connected = false, branch = '', curCat = 0;
+const pending = new Map(); // image path -> { dataUrl, b64 }
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const cur = () => data.categories[curCat];
+
+function setStatus(msg, kind) { const el = $('#status'); el.textContent = msg; el.className = 'status ' + (kind || ''); }
+function touch() { dirty = true; setStatus('Unsaved changes'); }
+function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'item'; }
+
+function utf8ToB64(str) {
+  const bytes = new TextEncoder().encode(str); let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+function b64ToUtf8(b64) {
+  const bin = atob(b64.replace(/\s/g, ''));
+  return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
+}
+
+/* ---------- GitHub API ---------- */
+const repoBase = () => `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}`;
+const hdr = () => ({ 'Authorization': 'Bearer ' + cfg.token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' });
+async function ghErr(r) {
+  let m = ''; try { m = (await r.json()).message; } catch (e) {}
+  const hint = r.status === 401 ? ' — token is invalid or expired'
+    : r.status === 403 ? ' — token lacks permission (needs Contents: Read and write)'
+    : r.status === 404 ? ' — repository not found, or token has no access to it'
+    : r.status === 409 ? ' — products.json changed elsewhere; reload this page and try again' : '';
+  return new Error(`GitHub ${r.status}: ${m}${hint}`);
+}
+async function connect() {
+  const r = await fetch(repoBase(), { headers: hdr() });
+  if (!r.ok) throw await ghErr(r);
+  const j = await r.json();
+  branch = cfg.branch || j.default_branch;
+}
+async function ghGetFile(path) {
+  const r = await fetch(`${repoBase()}/contents/${path}?ref=${encodeURIComponent(branch)}`, { headers: hdr(), cache: 'no-store' });
+  if (r.status === 404) return null;
+  if (!r.ok) throw await ghErr(r);
+  return r.json();
+}
+async function ghPut(path, b64, message, fileSha) {
+  const body = { message, content: b64, branch };
+  if (fileSha) body.sha = fileSha;
+  const r = await fetch(`${repoBase()}/contents/${path}`, {
+    method: 'PUT', headers: { ...hdr(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  if (!r.ok) throw await ghErr(r);
+  return r.json();
+}
+
+/* ---------- Loading ---------- */
+function normalize() {
+  if (!data || !Array.isArray(data.categories)) data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  data.categories.forEach((c, i) => {
+    c.id = c.id || slug(c.name || 'category-' + i);
+    c.name = c.name || ''; c.hex = c.hex || PALETTE[i % PALETTE.length]; c.blurb = c.blurb || '';
+    c.products = (c.products || []).map(p => ({
+      name: p.name || '', price: (p.price === '' || p.price == null) ? '' : Number(p.price),
+      image: p.image || '', soldOut: !!p.soldOut, hidden: !!p.hidden }));
+  });
+  if (curCat >= data.categories.length) curCat = 0;
+}
+async function loadFromSite() {
+  try { const r = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' }); if (r.ok) data = await r.json(); } catch (e) {}
+}
+async function loadAll() {
+  connected = false; sha = null; data = null;
+  if (cfg.token && cfg.owner && cfg.repo) {
+    setStatus('Connecting to GitHub…');
+    try {
+      await connect();
+      const f = await ghGetFile('products.json');
+      if (f) { data = JSON.parse(b64ToUtf8(f.content)); sha = f.sha; setStatus('Connected · products loaded', 'ok'); }
+      else { setStatus('Connected · products.json is not in the repo yet — your first save will create it', 'ok'); }
+      connected = true;
+    } catch (e) { setStatus(e.message, 'err'); }
+  } else {
+    setStatus('Not connected — open “GitHub connection” below to enable saving.');
+    $('#conn').open = true;
+  }
+  if (!data) await loadFromSite();
+  normalize(); dirty = false;
+  $('#saveBtn').disabled = !connected;
+  renderAll();
+}
+
+/* ---------- Rendering ---------- */
+function renderAll() { renderTabs(); renderCat(); }
+function renderTabs() {
+  $('#tabs').innerHTML = data.categories.map((c, i) =>
+    `<button class="tab${i === curCat ? ' on' : ''}" data-tab="${i}" style="--c:${esc(c.hex)}">${esc(c.name || 'Untitled')}<span class="count">${c.products.length}</span></button>`
+  ).join('') + `<button class="tab add" data-act="addcat">＋ Category</button>`;
+}
+function thumbSrc(p) { return p.image ? ((pending.get(p.image) || {}).dataUrl || p.image) : ''; }
+function renderCat() {
+  const c = cur();
+  if (!c) { $('#catEditor').innerHTML = '<div class="panel">No categories yet. Tap “＋ Category” above.</div>'; return; }
+  const prods = c.products.map((p, i) => `
+    <div class="prod${p.hidden ? ' dim' : ''}" data-p="${i}">
+      <div class="thumb">${thumbSrc(p) ? `<img src="${esc(thumbSrc(p))}" alt="">` : '<span>No photo</span>'}</div>
+      <div class="fields">
+        <input data-f="name" placeholder="Product name" value="${esc(p.name)}">
+        <div class="pricebox"><span>₹</span><input data-f="price" type="number" inputmode="numeric" min="0" placeholder="Price" value="${esc(p.price)}"></div>
+        <div class="chk">
+          <label><input type="checkbox" data-f="soldOut" ${p.soldOut ? 'checked' : ''}> Sold out</label>
+          <label><input type="checkbox" data-f="hidden" ${p.hidden ? 'checked' : ''}> Hide</label>
+        </div>
+        <div class="rowbtns">
+          <label class="btn sm" style="margin:0;color:var(--text)">${p.image ? 'Change photo' : 'Add photo'}<input type="file" accept="image/*" hidden data-file></label>
+          ${p.image ? '<button class="btn sm" data-act="rmphoto">Remove photo</button>' : ''}
+          <button class="btn sm" data-act="up" ${i === 0 ? 'disabled' : ''}>↑</button>
+          <button class="btn sm" data-act="down" ${i === c.products.length - 1 ? 'disabled' : ''}>↓</button>
+          <button class="btn sm danger" data-act="del">Delete</button>
+        </div>
+      </div>
+    </div>`).join('');
+  $('#catEditor').innerHTML = `
+    <div class="panel">
+      <div class="grid2">
+        <label style="margin-top:0">Category name <input data-cf="name" value="${esc(c.name)}"></label>
+        <label style="margin-top:0">Colour <input type="color" data-cf="hex" value="${esc(c.hex)}"></label>
+      </div>
+      <label>Short description <textarea data-cf="blurb" rows="2">${esc(c.blurb)}</textarea></label>
+      <div class="rowbtns"><button class="btn sm danger" data-act="delcat">Delete this category</button></div>
+    </div>
+    ${prods}
+    <button class="btn primary" data-act="addprod" style="width:100%;margin-top:6px">＋ Add product</button>`;
+}
+
+/* ---------- Image processing (square, compressed) ---------- */
+async function processImage(file) {
+  let bmp;
+  try { bmp = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
+  catch (e) { bmp = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = URL.createObjectURL(file); }); }
+  const w = bmp.width || bmp.naturalWidth, h = bmp.height || bmp.naturalHeight;
+  const S = 1000, M = Math.round(S * 0.04), inner = S - 2 * M;
+  const cv = document.createElement('canvas'); cv.width = cv.height = S;
+  const g = cv.getContext('2d');
+  g.fillStyle = '#FFF6EA'; g.fillRect(0, 0, S, S);
+  if (Math.max(w, h) / Math.min(w, h) <= 1.25) {
+    const side = Math.min(w, h);
+    g.drawImage(bmp, (w - side) / 2, (h - side) / 2, side, side, M, M, inner, inner);
+  } else {
+    const sc = inner / Math.max(w, h), dw = w * sc, dh = h * sc;
+    g.drawImage(bmp, 0, 0, w, h, (S - dw) / 2, (S - dh) / 2, dw, dh);
+  }
+  let q = 0.88, url;
+  do { url = cv.toDataURL('image/jpeg', q); q -= 0.06; } while (url.length * 0.75 > 180 * 1024 && q > 0.5);
+  return url;
+}
+
+/* ---------- Events ---------- */
+$('#tabs').addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.act === 'addcat') {
+    const name = 'New category';
+    let id = slug(name), n = 2; while (data.categories.some(c => c.id === id)) id = slug(name) + '-' + n++;
+    data.categories.push({ id, name, hex: PALETTE[data.categories.length % PALETTE.length], blurb: '', products: [] });
+    curCat = data.categories.length - 1; touch(); renderAll();
+  } else if (t.dataset.tab != null) { curCat = +t.dataset.tab; renderAll(); }
+});
+
+$('#catEditor').addEventListener('input', e => {
+  const t = e.target;
+  if (t.type === 'checkbox' || t.type === 'file') return;
+  if (t.dataset.cf) {
+    cur()[t.dataset.cf] = t.value;
+    if (t.dataset.cf === 'name' || t.dataset.cf === 'hex') renderTabs();
+    touch(); return;
+  }
+  if (t.dataset.f) {
+    const p = cur().products[+t.closest('[data-p]').dataset.p];
+    p[t.dataset.f] = t.dataset.f === 'price' ? (t.value === '' ? '' : Number(t.value)) : t.value;
+    touch();
+  }
+});
+
+$('#catEditor').addEventListener('change', async e => {
+  const t = e.target, row = t.closest('[data-p]');
+  if (t.type === 'checkbox' && row) {
+    const p = cur().products[+row.dataset.p];
+    p[t.dataset.f] = t.checked;
+    if (t.dataset.f === 'hidden') row.classList.toggle('dim', t.checked);
+    touch(); return;
+  }
+  if (t.type === 'file' && row && t.files[0]) {
+    const p = cur().products[+row.dataset.p];
+    try {
+      setStatus('Preparing photo…');
+      const url = await processImage(t.files[0]);
+      if (p.image && pending.has(p.image)) pending.delete(p.image);
+      const path = `images/${slug(p.name || 'product')}-${Date.now().toString(36)}.jpg`;
+      pending.set(path, { dataUrl: url, b64: url.split(',')[1] });
+      p.image = path; touch(); renderCat();
+    } catch (err) { setStatus('Could not read that photo — try another one.', 'err'); }
+    t.value = '';
+  }
+});
+
+$('#catEditor').addEventListener('click', e => {
+  const b = e.target.closest('button[data-act]'); if (!b) return;
+  const c = cur(), row = b.closest('[data-p]'), i = row ? +row.dataset.p : -1, act = b.dataset.act;
+  if (act === 'addprod') {
+    c.products.push({ name: '', price: '', image: '', soldOut: false, hidden: false });
+    touch(); renderAll();
+    const inputs = document.querySelectorAll('.prod [data-f=name]'); const last = inputs[inputs.length - 1];
+    if (last) { last.scrollIntoView({ block: 'center' }); last.focus(); }
+  } else if (act === 'del') {
+    if (confirm(`Delete "${c.products[i].name || 'this product'}"?`)) { c.products.splice(i, 1); touch(); renderAll(); }
+  } else if (act === 'up' && i > 0) {
+    [c.products[i - 1], c.products[i]] = [c.products[i], c.products[i - 1]]; touch(); renderCat();
+  } else if (act === 'down' && i < c.products.length - 1) {
+    [c.products[i + 1], c.products[i]] = [c.products[i], c.products[i + 1]]; touch(); renderCat();
+  } else if (act === 'rmphoto') {
+    if (pending.has(c.products[i].image)) pending.delete(c.products[i].image);
+    c.products[i].image = ''; touch(); renderCat();
+  } else if (act === 'delcat') {
+    if (confirm(`Delete the category "${c.name}" and all ${c.products.length} products in it?`)) {
+      data.categories.splice(curCat, 1); curCat = 0; touch(); renderAll();
+    }
+  }
+});
+
+/* ---------- Connection form ---------- */
+function fillCfg() {
+  if (!cfg.owner && /\.github\.io$/.test(location.hostname)) {
+    cfg.owner = location.hostname.split('.')[0];
+    const seg = location.pathname.split('/')[1];
+    cfg.repo = (seg && !seg.includes('.')) ? seg : cfg.owner + '.github.io';
+  }
+  $('#cOwner').value = cfg.owner; $('#cRepo').value = cfg.repo; $('#cBranch').value = cfg.branch; $('#cToken').value = cfg.token;
+}
+$('#connectBtn').addEventListener('click', async () => {
+  if (dirty && !confirm('You have unsaved changes. Reconnecting will reload products and discard them. Continue?')) return;
+  cfg = { owner: $('#cOwner').value.trim(), repo: $('#cRepo').value.trim(), branch: $('#cBranch').value.trim(), token: $('#cToken').value.trim() };
+  try { localStorage.setItem(LS_KEY, JSON.stringify(cfg)); } catch (e) {}
+  await loadAll();
+  if (connected) $('#conn').open = false;
+});
+$('#forgetBtn').addEventListener('click', () => {
+  cfg.token = ''; $('#cToken').value = '';
+  try { localStorage.setItem(LS_KEY, JSON.stringify(cfg)); } catch (e) {}
+  connected = false; $('#saveBtn').disabled = true; setStatus('Token removed from this browser.');
+});
+
+/* ---------- Save ---------- */
+$('#saveBtn').addEventListener('click', async () => {
+  if (!connected) { setStatus('Connect to GitHub first.', 'err'); return; }
+  for (const c of data.categories) for (const p of c.products)
+    if (!String(p.name).trim()) { setStatus(`A product in “${c.name}” has no name.`, 'err'); return; }
+  const btn = $('#saveBtn'); btn.disabled = true;
+  try {
+    const out = { categories: data.categories.map(c => ({
+      id: c.id, name: c.name.trim(), hex: c.hex, blurb: c.blurb.trim(),
+      products: c.products.map(p => ({
+        name: p.name.trim(), price: p.price === '' ? 0 : Number(p.price),
+        image: p.image || '', soldOut: !!p.soldOut, hidden: !!p.hidden })) })) };
+    const used = new Set(out.categories.flatMap(c => c.products.map(p => p.image)).filter(Boolean));
+    const toUpload = [...pending.keys()].filter(k => used.has(k));
+    let n = 0;
+    for (const path of toUpload) {
+      setStatus(`Uploading photo ${++n} of ${toUpload.length}…`);
+      await ghPut(path, pending.get(path).b64, 'Add product photo');
+      pending.delete(path);
+    }
+    setStatus('Saving products…');
+    const res = await ghPut('products.json', utf8ToB64(JSON.stringify(out, null, 2) + '\n'), 'Update products from admin panel', sha);
+    sha = res.content.sha; dirty = false;
+    setStatus('Saved ✓ Your website will show the changes in about a minute.', 'ok');
+  } catch (e) { setStatus(e.message, 'err'); }
+  finally { btn.disabled = !connected; }
+});
+
+$('#backupBtn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'products.json'; a.click();
+});
+
+window.addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+fillCfg();
+loadAll();
+</script>
+</body>
+</html>

@@ -444,6 +444,11 @@
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }
   }
+
+  .card-media .sold-badge { position:absolute; bottom:8px; left:8px; background:var(--ink); color:var(--cream);
+    font-size:.62rem; font-weight:800; padding:4px 9px; border-radius:100px; }
+  .card.soldout .card-media img { filter:grayscale(.7); opacity:.65; }
+  .card.soldout .order-btn { background:#9A91A8; }
 </style>
 </head>
 <body>
@@ -510,7 +515,7 @@
       <p>Based in India, shipping nationwide. Custom colours, sizes and preservation pieces made to order — just message the details on WhatsApp.</p>
     </div>
     <div class="about-stats">
-      <div class="stat"><div class="n">7</div><div class="l">Collections</div></div>
+      <div class="stat"><div class="n" id="statCollections">7</div><div class="l">Collections</div></div>
       <div class="stat"><div class="n">100%</div><div class="l">Handmade</div></div>
       <div class="stat"><div class="n">1:1</div><div class="l">One of a kind</div></div>
       <div class="stat"><div class="n">India</div><div class="l">Wide shipping</div></div>
@@ -544,108 +549,380 @@
 <script>
 const WA_NUMBER = "919654432113";
 
-// ---- Category & product data (edit names / prices / photos later) ----
-const categories = [
-  {
-    id: "jewelry", name: "Jewelry", color: "var(--magenta)", hex: "#FF3E80",
-    blurb: "Pendants, earrings and rings with flowers, foil and colour set in resin.",
-    products: [
-      ["Ocean Wave Pendant", 450, "images/ocean-wave-pendant.jpg"],
-      ["Dried Flower Stud Earrings", 350, "images/dried-flower-stud-earrings.jpg"],
-      ["Galaxy Swirl Ring", 300, "images/galaxy-swirl-ring.jpg"],
-      ["Pressed Vine Drop Earrings", 400, "images/pressed-vine-drop-earrings.jpg"],
-      ["Rose Petal Earrings", 380, "images/rose-petal-earrings.jpg"],
-      ["Gold Flake Drop Earrings", 420, "images/gold-flake-drop-earrings.jpg"],
-    ]
-  },
-  {
-    id: "preservation", name: "Photo & Flower Preservation", color: "var(--teal)", hex: "#0FA8A0",
-    blurb: "Wedding flowers, baby keepsakes and photographs, set in resin to last.",
-    products: [
-      ["Custom Photo Frame Block", 899, "images/custom-photo-frame-block.jpg"],
-      ["Wedding Flower Preservation Set", 1499, "images/wedding-flower-preservation-set.jpg"],
-      ["Baby's First Curl Keepsake", 999, "images/babys-first-curl-keepsake.jpg"],
-      ["Bridal Bouquet Preservation Dome", 1999, "images/bridal-bouquet-preservation-dome.jpg"],
-      ["Memory Photo Coaster", 599],
-      ["Pressed Flower Bookmark Set", 299, "images/pressed-flower-bookmark-set.jpg"],
-    ]
-  },
-  {
-    id: "decor", name: "Home Decor", color: "var(--amber)", hex: "#FFB100",
-    blurb: "Trays, bowls and boxes that bring a poured-colour moment into a room.",
-    products: [
-      ["Ocean Swirl Serving Tray", 1200],
-      ["Geode Trinket Bowl", 850],
-      ["Marble Effect Coaster Set (4pc)", 899],
-      ["Galaxy Jewelry Box", 1500],
-      ["Floral Tea Light Holder", 650],
-      ["Abstract Art Bowl", 950],
-    ]
-  },
-  {
-    id: "keychains", name: "Keychains & Accessories", color: "var(--violet)", hex: "#7C4DFF",
-    blurb: "Small, giftable pieces — initials, flowers and charms you can carry daily.",
-    products: [
-      ["Initial Letter Keychain", 150, "images/initial-letter-keychain.jpg"],
-      ["Flower Preservation Keychain", 180],
-      ["Galaxy Swirl Keychain", 160],
-      ["Photo Charm Keychain", 200, "images/photo-charm-keychain.jpg"],
-      ["Mini Geode Keychain", 170],
-      ["Name Tag Bag Charm", 190],
-    ]
-  },
-  {
-    id: "wallart", name: "Wall Art & Frames", color: "var(--coral)", hex: "#FF6B4A",
-    blurb: "Statement panels and frames for a wall that needs one bold, poured piece.",
-    products: [
-      ["Ocean Sunset Wall Panel", 2200],
-      ["Abstract Swirl Canvas", 1800],
-      ["Floral Resin Frame", 1100],
-      ["Geode Wall Art (Large)", 2500],
-      ["Custom Name Wall Plaque", 1300],
-      ["Marble Effect Wall Clock", 1600],
-    ]
-  },
-  {
-    id: "rakhi", name: "Rakhi", color: "var(--saffron)", hex: "#F2994A",
-    blurb: "Resin rakhis for the season — floral, minimal or made to a name.",
-    products: [
-      ["Floral Resin Rakhi", 150],
-      ["Kids Cartoon Rakhi", 120],
-      ["Pearl & Resin Rakhi", 180],
-      ["Bhaiya-Bhabhi Rakhi Set", 250],
-      ["Minimalist Gold Flake Rakhi", 160],
-      ["Personalized Name Rakhi", 200],
-    ]
-  },
-  {
-    id: "bracelets", name: "Bracelets", color: "var(--sky)", hex: "#2DB3E8",
-    blurb: "Bangles and cuffs in swirled colour, foil and pressed flowers.",
-    products: [
-      ["Ocean Wave Bangle", 400],
-      ["Dried Flower Bracelet", 350],
-      ["Galaxy Swirl Bangle", 380],
-      ["Gold Foil Cuff Bracelet", 420],
-      ["Beaded Resin Bracelet", 300],
-      ["Marble Effect Bangle Set", 650],
-    ]
-  },
-];
+// Fallback data (used only if products.json can't be loaded, e.g. opening the file directly)
+const DEFAULT_DATA = {
+  "categories": [
+    {
+      "id": "jewelry",
+      "name": "Jewelry",
+      "hex": "#FF3E80",
+      "blurb": "Pendants, earrings and rings with flowers, foil and colour set in resin.",
+      "products": [
+        {
+          "name": "Ocean Wave Pendant",
+          "price": 450,
+          "image": "images/ocean-wave-pendant.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Dried Flower Stud Earrings",
+          "price": 350,
+          "image": "images/dried-flower-stud-earrings.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Galaxy Swirl Ring",
+          "price": 300,
+          "image": "images/galaxy-swirl-ring.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Pressed Vine Drop Earrings",
+          "price": 400,
+          "image": "images/pressed-vine-drop-earrings.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Rose Petal Earrings",
+          "price": 380,
+          "image": "images/rose-petal-earrings.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Gold Flake Drop Earrings",
+          "price": 420,
+          "image": "images/gold-flake-drop-earrings.jpg",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "preservation",
+      "name": "Photo & Flower Preservation",
+      "hex": "#0FA8A0",
+      "blurb": "Wedding flowers, baby keepsakes and photographs, set in resin to last.",
+      "products": [
+        {
+          "name": "Custom Photo Frame Block",
+          "price": 899,
+          "image": "images/custom-photo-frame-block.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Wedding Flower Preservation Set",
+          "price": 1499,
+          "image": "images/wedding-flower-preservation-set.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Baby's First Curl Keepsake",
+          "price": 999,
+          "image": "images/babys-first-curl-keepsake.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Bridal Bouquet Preservation Dome",
+          "price": 1999,
+          "image": "images/bridal-bouquet-preservation-dome.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Memory Photo Coaster",
+          "price": 599,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Pressed Flower Bookmark Set",
+          "price": 299,
+          "image": "images/pressed-flower-bookmark-set.jpg",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "decor",
+      "name": "Home Decor",
+      "hex": "#FFB100",
+      "blurb": "Trays, bowls and boxes that bring a poured-colour moment into a room.",
+      "products": [
+        {
+          "name": "Ocean Swirl Serving Tray",
+          "price": 1200,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Geode Trinket Bowl",
+          "price": 850,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Marble Effect Coaster Set (4pc)",
+          "price": 899,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Galaxy Jewelry Box",
+          "price": 1500,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Floral Tea Light Holder",
+          "price": 650,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Abstract Art Bowl",
+          "price": 950,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "keychains",
+      "name": "Keychains & Accessories",
+      "hex": "#7C4DFF",
+      "blurb": "Small, giftable pieces — initials, flowers and charms you can carry daily.",
+      "products": [
+        {
+          "name": "Initial Letter Keychain",
+          "price": 150,
+          "image": "images/initial-letter-keychain.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Flower Preservation Keychain",
+          "price": 180,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Galaxy Swirl Keychain",
+          "price": 160,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Photo Charm Keychain",
+          "price": 200,
+          "image": "images/photo-charm-keychain.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Mini Geode Keychain",
+          "price": 170,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Name Tag Bag Charm",
+          "price": 190,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "wallart",
+      "name": "Wall Art & Frames",
+      "hex": "#FF6B4A",
+      "blurb": "Statement panels and frames for a wall that needs one bold, poured piece.",
+      "products": [
+        {
+          "name": "Ocean Sunset Wall Panel",
+          "price": 2200,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Abstract Swirl Canvas",
+          "price": 1800,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Floral Resin Frame",
+          "price": 1100,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Geode Wall Art (Large)",
+          "price": 2500,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Custom Name Wall Plaque",
+          "price": 1300,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Marble Effect Wall Clock",
+          "price": 1600,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "rakhi",
+      "name": "Rakhi",
+      "hex": "#F2994A",
+      "blurb": "Resin rakhis for the season — floral, minimal or made to a name.",
+      "products": [
+        {
+          "name": "Floral Resin Rakhi",
+          "price": 150,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Kids Cartoon Rakhi",
+          "price": 120,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Pearl & Resin Rakhi",
+          "price": 180,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Bhaiya-Bhabhi Rakhi Set",
+          "price": 250,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Minimalist Gold Flake Rakhi",
+          "price": 160,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Personalized Name Rakhi",
+          "price": 200,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "bracelets",
+      "name": "Bracelets",
+      "hex": "#2DB3E8",
+      "blurb": "Bangles and cuffs in swirled colour, foil and pressed flowers.",
+      "products": [
+        {
+          "name": "Ocean Wave Bangle",
+          "price": 400,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Dried Flower Bracelet",
+          "price": 350,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Galaxy Swirl Bangle",
+          "price": 380,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Gold Foil Cuff Bracelet",
+          "price": 420,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Beaded Resin Bracelet",
+          "price": 300,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Marble Effect Bangle Set",
+          "price": 650,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    }
+  ]
+};
 
-function waLink(productName, price, anchorId) {
-  const msg = `Hi Rasya Crafts, I'm interested in this product.\n${productName} - ₹${price}`;
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function waLink(productName, price) {
+  const p = Number(price);
+  const line = p > 0 ? `${productName} - ₹${p}` : productName;
+  const msg = `Hi Rasya Crafts, I'm interested in this product.\n${line}`;
   return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 
-function photoMedia(src, name) {
+function photoMedia(src, name, extra) {
   return `
     <div class="card-media">
-      <img src="${src}" alt="${name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+      <img src="${esc(src)}" alt="${esc(name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+      ${extra || ''}
     </div>`;
 }
 
-function placeholderMedia(hex, seed) {
-  // deterministic pseudo-random-ish swirl placeholder using seed
+function placeholderMedia(hex, seed, extra) {
   const hueShift = (seed * 47) % 360;
   return `
     <div class="card-media" style="background:
@@ -658,81 +935,108 @@ function placeholderMedia(hex, seed) {
         <circle cx="50" cy="50" r="34" fill="none" stroke="${hex}" stroke-width="2.5"/>
         <circle cx="50" cy="50" r="18" fill="none" stroke="${hex}" stroke-width="1.5" stroke-dasharray="3 4"/>
       </svg>
+      ${extra || ''}
     </div>`;
 }
+
+const WA_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.2 4.79 1.2 5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm0 18.2c-1.5 0-2.97-.4-4.25-1.16l-.3-.18-3.12.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.37c0-4.52 3.68-8.2 8.2-8.2 4.52 0 8.2 3.68 8.2 8.2s-3.68 8.24-8.1 8.24z"/></svg>';
 
 const shop = document.getElementById('shop');
 const catnav = document.getElementById('catnav');
 const footnav = document.getElementById('footnav');
 
-categories.forEach((cat, ci) => {
-  // nav pill
-  const a = document.createElement('a');
-  a.href = `#${cat.id}`;
-  a.textContent = cat.name;
-  a.style.setProperty('--cat-color', cat.hex);
-  catnav.appendChild(a);
-
-  const fa = document.createElement('a');
-  fa.href = `#${cat.id}`;
-  fa.textContent = cat.name;
-  footnav.appendChild(fa);
-
-  // section
-  const section = document.createElement('section');
-  section.className = `category-section ${ci % 2 === 0 ? 'tint-1' : 'tint-2'}`;
-  section.id = cat.id;
-  section.style.setProperty('--cat-color', cat.hex);
-
-  const cardsHtml = cat.products.map(([name, price, photo], pi) => {
-    const anchorId = `${cat.id}-${pi + 1}`;
-    return `
-    <div class="card" id="${anchorId}" data-pi="${pi}" style="cursor:pointer">
-      ${photo ? photoMedia(photo, name) : placeholderMedia(cat.hex, ci * 6 + pi)}
-      <div class="card-body">
-        <h3>${name}</h3>
-        <div class="price-row">
-          <span class="price">₹${price.toLocaleString('en-IN')}</span>
-          <span class="order-btn" style="--cat-color:${cat.hex}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.2 4.79 1.2 5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm0 18.2c-1.5 0-2.97-.4-4.25-1.16l-.3-.18-3.12.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.37c0-4.52 3.68-8.2 8.2-8.2 4.52 0 8.2 3.68 8.2 8.2s-3.68 8.24-8.1 8.24z"/></svg>
-            Order
-          </span>
-        </div>
-      </div>
-    </div>
-  `;
-  }).join('');
-
-  section.innerHTML = `
-    <div class="wrap">
-      <div class="category-head">
-        <div>
-          <h2>${cat.name}</h2>
-          <p class="category-blurb">${cat.blurb}</p>
-        </div>
-        <div style="display:flex;align-items:center;gap:14px;">
-          <span class="swipe-hint">Swipe to see all 6
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
-          </span>
-          <div class="num">${String(ci + 1).padStart(2,'0')} / ${String(categories.length).padStart(2,'0')}</div>
-        </div>
-      </div>
-      <div class="grid">${cardsHtml}</div>
-    </div>
-  `;
-  shop.appendChild(section);
-
-  // attach click listeners (more reliable than inline onclick attributes)
-  cat.products.forEach(([name, price], pi) => {
-    const anchorId = `${cat.id}-${pi + 1}`;
-    const el = document.getElementById(anchorId);
-    if (el) {
-      el.addEventListener('click', () => {
-        window.open(waLink(name, price, anchorId), '_blank');
-      });
+async function loadData() {
+  try {
+    const r = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
+    if (r.ok) {
+      const d = await r.json();
+      if (d && Array.isArray(d.categories)) return d;
     }
+  } catch (e) {}
+  return DEFAULT_DATA;
+}
+
+function render(data) {
+  shop.innerHTML = ''; catnav.innerHTML = ''; footnav.innerHTML = '';
+
+  const cats = (data.categories || [])
+    .map(c => ({ ...c, products: (c.products || []).filter(p => p && p.name && !p.hidden) }))
+    .filter(c => c.products.length);
+
+  cats.forEach((cat, ci) => {
+    const hex = cat.hex || '#FF3E80';
+
+    const a = document.createElement('a');
+    a.href = `#${cat.id}`; a.textContent = cat.name;
+    a.style.setProperty('--cat-color', hex);
+    catnav.appendChild(a);
+
+    const fa = document.createElement('a');
+    fa.href = `#${cat.id}`; fa.textContent = cat.name;
+    footnav.appendChild(fa);
+
+    const section = document.createElement('section');
+    section.className = `category-section ${ci % 2 === 0 ? 'tint-1' : 'tint-2'}`;
+    section.id = cat.id;
+    section.style.setProperty('--cat-color', hex);
+
+    const cardsHtml = cat.products.map((p, pi) => {
+      const anchorId = `${cat.id}-${pi + 1}`;
+      const sold = !!p.soldOut;
+      const badge = sold ? '<span class="sold-badge">Sold out</span>' : '';
+      const price = Number(p.price);
+      const priceText = price > 0 ? `₹${price.toLocaleString('en-IN')}` : 'Ask price';
+      return `
+      <div class="card${sold ? ' soldout' : ''}" id="${esc(anchorId)}" style="cursor:${sold ? 'default' : 'pointer'}">
+        ${p.image ? photoMedia(p.image, p.name, badge) : placeholderMedia(hex, ci * 6 + pi, badge)}
+        <div class="card-body">
+          <h3>${esc(p.name)}</h3>
+          <div class="price-row">
+            <span class="price">${priceText}</span>
+            <span class="order-btn" style="--cat-color:${esc(hex)}">${sold ? 'Sold out' : WA_ICON + 'Order'}</span>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
+    const hint = cat.products.length > 3
+      ? `<span class="swipe-hint">Swipe to see all ${cat.products.length}
+           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+         </span>` : '';
+
+    section.innerHTML = `
+      <div class="wrap">
+        <div class="category-head">
+          <div>
+            <h2>${esc(cat.name)}</h2>
+            <p class="category-blurb">${esc(cat.blurb || '')}</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;">
+            ${hint}
+            <div class="num">${String(ci + 1).padStart(2, '0')} / ${String(cats.length).padStart(2, '0')}</div>
+          </div>
+        </div>
+        <div class="grid">${cardsHtml}</div>
+      </div>`;
+    shop.appendChild(section);
+
+    cat.products.forEach((p, pi) => {
+      if (p.soldOut) return;
+      const el = document.getElementById(`${cat.id}-${pi + 1}`);
+      if (el) el.addEventListener('click', () => window.open(waLink(p.name, p.price), '_blank'));
+    });
   });
-});
+
+  const sc = document.getElementById('statCollections');
+  if (sc) sc.textContent = cats.length;
+
+  if (location.hash) {
+    const t = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (t) t.scrollIntoView();
+  }
+}
+
+loadData().then(render);
 </script>
 
 </body>

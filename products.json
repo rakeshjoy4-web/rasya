@@ -1,0 +1,354 @@
+{
+  "categories": [
+    {
+      "id": "jewelry",
+      "name": "Jewelry",
+      "hex": "#FF3E80",
+      "blurb": "Pendants, earrings and rings with flowers, foil and colour set in resin.",
+      "products": [
+        {
+          "name": "Ocean Wave Pendant",
+          "price": 450,
+          "image": "images/ocean-wave-pendant.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Dried Flower Stud Earrings",
+          "price": 350,
+          "image": "images/dried-flower-stud-earrings.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Galaxy Swirl Ring",
+          "price": 300,
+          "image": "images/galaxy-swirl-ring.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Pressed Vine Drop Earrings",
+          "price": 400,
+          "image": "images/pressed-vine-drop-earrings.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Rose Petal Earrings",
+          "price": 380,
+          "image": "images/rose-petal-earrings.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Gold Flake Drop Earrings",
+          "price": 420,
+          "image": "images/gold-flake-drop-earrings.jpg",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "preservation",
+      "name": "Photo & Flower Preservation",
+      "hex": "#0FA8A0",
+      "blurb": "Wedding flowers, baby keepsakes and photographs, set in resin to last.",
+      "products": [
+        {
+          "name": "Custom Photo Frame Block",
+          "price": 899,
+          "image": "images/custom-photo-frame-block.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Wedding Flower Preservation Set",
+          "price": 1499,
+          "image": "images/wedding-flower-preservation-set.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Baby's First Curl Keepsake",
+          "price": 999,
+          "image": "images/babys-first-curl-keepsake.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Bridal Bouquet Preservation Dome",
+          "price": 1999,
+          "image": "images/bridal-bouquet-preservation-dome.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Memory Photo Coaster",
+          "price": 599,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Pressed Flower Bookmark Set",
+          "price": 299,
+          "image": "images/pressed-flower-bookmark-set.jpg",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "decor",
+      "name": "Home Decor",
+      "hex": "#FFB100",
+      "blurb": "Trays, bowls and boxes that bring a poured-colour moment into a room.",
+      "products": [
+        {
+          "name": "Ocean Swirl Serving Tray",
+          "price": 1200,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Geode Trinket Bowl",
+          "price": 850,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Marble Effect Coaster Set (4pc)",
+          "price": 899,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Galaxy Jewelry Box",
+          "price": 1500,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Floral Tea Light Holder",
+          "price": 650,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Abstract Art Bowl",
+          "price": 950,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "keychains",
+      "name": "Keychains & Accessories",
+      "hex": "#7C4DFF",
+      "blurb": "Small, giftable pieces — initials, flowers and charms you can carry daily.",
+      "products": [
+        {
+          "name": "Initial Letter Keychain",
+          "price": 150,
+          "image": "images/initial-letter-keychain.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Flower Preservation Keychain",
+          "price": 180,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Galaxy Swirl Keychain",
+          "price": 160,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Photo Charm Keychain",
+          "price": 200,
+          "image": "images/photo-charm-keychain.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Mini Geode Keychain",
+          "price": 170,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Name Tag Bag Charm",
+          "price": 190,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "wallart",
+      "name": "Wall Art & Frames",
+      "hex": "#FF6B4A",
+      "blurb": "Statement panels and frames for a wall that needs one bold, poured piece.",
+      "products": [
+        {
+          "name": "Ocean Sunset Wall Panel",
+          "price": 2200,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Abstract Swirl Canvas",
+          "price": 1800,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Floral Resin Frame",
+          "price": 1100,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Geode Wall Art (Large)",
+          "price": 2500,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Custom Name Wall Plaque",
+          "price": 1300,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Marble Effect Wall Clock",
+          "price": 1600,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "rakhi",
+      "name": "Rakhi",
+      "hex": "#F2994A",
+      "blurb": "Resin rakhis for the season — floral, minimal or made to a name.",
+      "products": [
+        {
+          "name": "Floral Resin Rakhi",
+          "price": 150,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Kids Cartoon Rakhi",
+          "price": 120,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Pearl & Resin Rakhi",
+          "price": 180,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Bhaiya-Bhabhi Rakhi Set",
+          "price": 250,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Minimalist Gold Flake Rakhi",
+          "price": 160,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Personalized Name Rakhi",
+          "price": 200,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "bracelets",
+      "name": "Bracelets",
+      "hex": "#2DB3E8",
+      "blurb": "Bangles and cuffs in swirled colour, foil and pressed flowers.",
+      "products": [
+        {
+          "name": "Ocean Wave Bangle",
+          "price": 400,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Dried Flower Bracelet",
+          "price": 350,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Galaxy Swirl Bangle",
+          "price": 380,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Gold Foil Cuff Bracelet",
+          "price": 420,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Beaded Resin Bracelet",
+          "price": 300,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Marble Effect Bangle Set",
+          "price": 650,
+          "image": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    }
+  ]
+}
