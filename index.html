@@ -449,6 +449,34 @@
     font-size:.62rem; font-weight:800; padding:4px 9px; border-radius:100px; }
   .card.soldout .card-media img { filter:grayscale(.7); opacity:.65; }
   .card.soldout .order-btn { background:#9A91A8; }
+
+  .card-media.zoomable { cursor: zoom-in; }
+  .card-media .multi-badge { position:absolute; bottom:8px; right:8px; background:rgba(23,11,43,.7); color:var(--cream);
+    font-size:.6rem; font-weight:700; padding:4px 8px; border-radius:100px; }
+  button.order-btn { font-family: inherit; }
+
+  /* ---------- Lightbox ---------- */
+  .lb { position:fixed; inset:0; z-index:100; background:rgba(15,8,28,.95); display:none; flex-direction:column; }
+  .lb.open { display:flex; }
+  .lb-top { display:flex; justify-content:space-between; align-items:center;
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 6px; color:#fff; }
+  .lb-count { font-size:.85rem; opacity:.85; font-weight:700; }
+  .lb-close { background:rgba(255,255,255,.16); border:0; color:#fff; width:40px; height:40px; border-radius:50%;
+    font-size:1.1rem; cursor:pointer; }
+  .lb-body { position:relative; flex:1; min-height:0; display:flex; }
+  .lb-track { flex:1; display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; min-height:0; }
+  .lb-track::-webkit-scrollbar { display:none; }
+  .lb-slide { flex:0 0 100%; scroll-snap-align:center; scroll-snap-stop:always; padding:0 10px; }
+  .lb-slide img { width:100%; height:100%; object-fit:contain; display:block; border-radius:10px; }
+  .lb-nav { position:absolute; top:50%; transform:translateY(-50%); z-index:2; background:rgba(255,255,255,.18); border:0; color:#fff;
+    width:42px; height:42px; border-radius:50%; font-size:1.6rem; line-height:1; cursor:pointer; display:none; }
+  .lb-nav.prev { left:12px; } .lb-nav.next { right:12px; }
+  @media (hover:hover) and (min-width:700px) { .lb-nav.on { display:block; } }
+  .lb-info { display:flex; align-items:center; justify-content:space-between; gap:12px; color:#fff;
+    padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px)); }
+  .lb-info h3 { color:#fff; font-size:1rem; font-weight:600; }
+  .lb-price { font-family:'Fraunces', Georgia, serif; font-size:1.05rem; color:var(--amber); margin-top:2px; }
+  .lb-order { font-size:.9rem !important; padding:11px 18px !important; flex:none; }
 </style>
 </head>
 <body>
@@ -546,6 +574,19 @@
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.2 4.79 1.2 5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm0 18.2c-1.5 0-2.97-.4-4.25-1.16l-.3-.18-3.12.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.37c0-4.52 3.68-8.2 8.2-8.2 4.52 0 8.2 3.68 8.2 8.2s-3.68 8.24-8.1 8.24z"/></svg>
 </a>
 
+<div class="lb" id="lb" aria-hidden="true">
+  <div class="lb-top"><span class="lb-count" id="lbCount"></span><button class="lb-close" id="lbClose" aria-label="Close">✕</button></div>
+  <div class="lb-body">
+    <button class="lb-nav prev" id="lbPrev" aria-label="Previous photo">‹</button>
+    <div class="lb-track" id="lbTrack"></div>
+    <button class="lb-nav next" id="lbNext" aria-label="Next photo">›</button>
+  </div>
+  <div class="lb-info">
+    <div><h3 id="lbName"></h3><div class="lb-price" id="lbPrice"></div></div>
+    <button class="order-btn lb-order" id="lbOrder" type="button"></button>
+  </div>
+</div>
+
 <script>
 const WA_NUMBER = "919654432113";
 
@@ -563,42 +604,60 @@ const DEFAULT_DATA = {
           "price": 450,
           "image": "images/ocean-wave-pendant.jpg",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": [
+            "images/ocean-wave-pendant.jpg"
+          ]
         },
         {
           "name": "Dried Flower Stud Earrings",
           "price": 350,
           "image": "images/dried-flower-stud-earrings.jpg",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": [
+            "images/dried-flower-stud-earrings.jpg"
+          ]
         },
         {
           "name": "Galaxy Swirl Ring",
           "price": 300,
           "image": "images/galaxy-swirl-ring.jpg",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": [
+            "images/galaxy-swirl-ring.jpg"
+          ]
         },
         {
           "name": "Pressed Vine Drop Earrings",
           "price": 400,
           "image": "images/pressed-vine-drop-earrings.jpg",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": [
+            "images/pressed-vine-drop-earrings.jpg"
+          ]
         },
         {
           "name": "Rose Petal Earrings",
           "price": 380,
           "image": "images/rose-petal-earrings.jpg",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": [
+            "images/rose-petal-earrings.jpg"
+          ]
         },
         {
           "name": "Gold Flake Drop Earrings",
           "price": 420,
           "image": "images/gold-flake-drop-earrings.jpg",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": [
+            "images/gold-flake-drop-earrings.jpg"
+          ]
         }
       ]
     },
@@ -613,42 +672,58 @@ const DEFAULT_DATA = {
           "price": 899,
           "image": "images/custom-photo-frame-block.jpg",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": [
+            "images/custom-photo-frame-block.jpg"
+          ]
         },
         {
           "name": "Wedding Flower Preservation Set",
           "price": 1499,
           "image": "images/wedding-flower-preservation-set.jpg",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": [
+            "images/wedding-flower-preservation-set.jpg"
+          ]
         },
         {
           "name": "Baby's First Curl Keepsake",
           "price": 999,
           "image": "images/babys-first-curl-keepsake.jpg",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": [
+            "images/babys-first-curl-keepsake.jpg"
+          ]
         },
         {
           "name": "Bridal Bouquet Preservation Dome",
           "price": 1999,
           "image": "images/bridal-bouquet-preservation-dome.jpg",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": [
+            "images/bridal-bouquet-preservation-dome.jpg"
+          ]
         },
         {
           "name": "Memory Photo Coaster",
           "price": 599,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Pressed Flower Bookmark Set",
           "price": 299,
           "image": "images/pressed-flower-bookmark-set.jpg",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": [
+            "images/pressed-flower-bookmark-set.jpg"
+          ]
         }
       ]
     },
@@ -663,42 +738,48 @@ const DEFAULT_DATA = {
           "price": 1200,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Geode Trinket Bowl",
           "price": 850,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Marble Effect Coaster Set (4pc)",
           "price": 899,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Galaxy Jewelry Box",
           "price": 1500,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Floral Tea Light Holder",
           "price": 650,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Abstract Art Bowl",
           "price": 950,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         }
       ]
     },
@@ -713,42 +794,52 @@ const DEFAULT_DATA = {
           "price": 150,
           "image": "images/initial-letter-keychain.jpg",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": [
+            "images/initial-letter-keychain.jpg"
+          ]
         },
         {
           "name": "Flower Preservation Keychain",
           "price": 180,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Galaxy Swirl Keychain",
           "price": 160,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Photo Charm Keychain",
           "price": 200,
           "image": "images/photo-charm-keychain.jpg",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": [
+            "images/photo-charm-keychain.jpg"
+          ]
         },
         {
           "name": "Mini Geode Keychain",
           "price": 170,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Name Tag Bag Charm",
           "price": 190,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         }
       ]
     },
@@ -763,42 +854,48 @@ const DEFAULT_DATA = {
           "price": 2200,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Abstract Swirl Canvas",
           "price": 1800,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Floral Resin Frame",
           "price": 1100,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Geode Wall Art (Large)",
           "price": 2500,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Custom Name Wall Plaque",
           "price": 1300,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Marble Effect Wall Clock",
           "price": 1600,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         }
       ]
     },
@@ -813,42 +910,48 @@ const DEFAULT_DATA = {
           "price": 150,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Kids Cartoon Rakhi",
           "price": 120,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Pearl & Resin Rakhi",
           "price": 180,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Bhaiya-Bhabhi Rakhi Set",
           "price": 250,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Minimalist Gold Flake Rakhi",
           "price": 160,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Personalized Name Rakhi",
           "price": 200,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         }
       ]
     },
@@ -863,42 +966,48 @@ const DEFAULT_DATA = {
           "price": 400,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Dried Flower Bracelet",
           "price": 350,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Galaxy Swirl Bangle",
           "price": 380,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Gold Foil Cuff Bracelet",
           "price": 420,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Beaded Resin Bracelet",
           "price": 300,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         },
         {
           "name": "Marble Effect Bangle Set",
           "price": 650,
           "image": "",
           "soldOut": false,
-          "hidden": false
+          "hidden": false,
+          "images": []
         }
       ]
     }
@@ -906,17 +1015,21 @@ const DEFAULT_DATA = {
 };
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const getImages = p => (Array.isArray(p.images) && p.images.length ? p.images : (p.image ? [p.image] : [])).filter(Boolean);
 
-function waLink(productName, price) {
+function absUrl(path) { try { return new URL(path, location.href).href; } catch (e) { return ''; } }
+
+// WhatsApp links can only carry text, so the main photo goes in as a link (WhatsApp usually shows a preview of it)
+function waLink(productName, price, image) {
   const p = Number(price);
-  const line = p > 0 ? `${productName} - ₹${p}` : productName;
-  const msg = `Hi Rasya Crafts, I'm interested in this product.\n${line}`;
+  let msg = `Hi Rasya Crafts, I'm interested in this product.\n${p > 0 ? `${productName} - ₹${p}` : productName}`;
+  if (image && /^https?:$/.test(location.protocol)) msg += `\n${absUrl(image)}`;
   return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 
 function photoMedia(src, name, extra) {
   return `
-    <div class="card-media">
+    <div class="card-media zoomable">
       <img src="${esc(src)}" alt="${esc(name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
       ${extra || ''}
     </div>`;
@@ -945,6 +1058,51 @@ const shop = document.getElementById('shop');
 const catnav = document.getElementById('catnav');
 const footnav = document.getElementById('footnav');
 
+/* ---------- Lightbox ---------- */
+const lb = document.getElementById('lb'), lbTrack = document.getElementById('lbTrack');
+const lbCount = document.getElementById('lbCount'), lbPrev = document.getElementById('lbPrev'), lbNext = document.getElementById('lbNext');
+let lbN = 0;
+
+function lbIndex() { return Math.round(lbTrack.scrollLeft / Math.max(1, lbTrack.clientWidth)); }
+function lbUpdate() {
+  const i = lbIndex();
+  lbCount.textContent = lbN > 1 ? `${Math.min(i + 1, lbN)} / ${lbN}` : '';
+  lbPrev.classList.toggle('on', lbN > 1 && i > 0);
+  lbNext.classList.toggle('on', lbN > 1 && i < lbN - 1);
+}
+function lbGo(d) { lbTrack.scrollBy({ left: d * lbTrack.clientWidth, behavior: 'smooth' }); }
+
+function openLightbox(p, imgs, hex) {
+  lbN = imgs.length;
+  lbTrack.innerHTML = imgs.map(s => `<div class="lb-slide"><img src="${esc(s)}" alt="${esc(p.name)}"></div>`).join('');
+  document.getElementById('lbName').textContent = p.name;
+  const price = Number(p.price);
+  document.getElementById('lbPrice').textContent = price > 0 ? `₹${price.toLocaleString('en-IN')}` : 'Ask price';
+  const ob = document.getElementById('lbOrder');
+  ob.style.setProperty('--cat-color', hex);
+  if (p.soldOut) { ob.innerHTML = 'Sold out'; ob.style.background = '#9A91A8'; ob.onclick = null; }
+  else { ob.innerHTML = WA_ICON + 'Order on WhatsApp'; ob.style.background = ''; ob.onclick = () => window.open(waLink(p.name, p.price, imgs[0]), '_blank'); }
+  lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false');
+  document.documentElement.style.overflow = 'hidden';
+  lbTrack.scrollLeft = 0; lbUpdate();
+}
+function closeLightbox() {
+  lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true');
+  document.documentElement.style.overflow = ''; lbTrack.innerHTML = '';
+}
+lbTrack.addEventListener('scroll', lbUpdate);
+lbPrev.addEventListener('click', () => lbGo(-1));
+lbNext.addEventListener('click', () => lbGo(1));
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+lbTrack.addEventListener('click', e => { if (e.target.classList.contains('lb-slide')) closeLightbox(); });
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  else if (e.key === 'ArrowLeft') lbGo(-1);
+  else if (e.key === 'ArrowRight') lbGo(1);
+});
+
+/* ---------- Data + render ---------- */
 async function loadData() {
   try {
     const r = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
@@ -982,18 +1140,22 @@ function render(data) {
 
     const cardsHtml = cat.products.map((p, pi) => {
       const anchorId = `${cat.id}-${pi + 1}`;
+      const imgs = getImages(p);
       const sold = !!p.soldOut;
-      const badge = sold ? '<span class="sold-badge">Sold out</span>' : '';
+      const extra = (sold ? '<span class="sold-badge">Sold out</span>' : '')
+                  + (imgs.length > 1 ? `<span class="multi-badge">${imgs.length} photos</span>` : '');
       const price = Number(p.price);
       const priceText = price > 0 ? `₹${price.toLocaleString('en-IN')}` : 'Ask price';
       return `
-      <div class="card${sold ? ' soldout' : ''}" id="${esc(anchorId)}" style="cursor:${sold ? 'default' : 'pointer'}">
-        ${p.image ? photoMedia(p.image, p.name, badge) : placeholderMedia(hex, ci * 6 + pi, badge)}
+      <div class="card${sold ? ' soldout' : ''}" id="${esc(anchorId)}">
+        ${imgs.length ? photoMedia(imgs[0], p.name, extra) : placeholderMedia(hex, ci * 6 + pi, extra)}
         <div class="card-body">
           <h3>${esc(p.name)}</h3>
           <div class="price-row">
             <span class="price">${priceText}</span>
-            <span class="order-btn" style="--cat-color:${esc(hex)}">${sold ? 'Sold out' : WA_ICON + 'Order'}</span>
+            ${sold
+              ? `<span class="order-btn" style="--cat-color:#9A91A8">Sold out</span>`
+              : `<button type="button" class="order-btn" data-order style="--cat-color:${esc(hex)}">${WA_ICON}Order</button>`}
           </div>
         </div>
       </div>`;
@@ -1021,9 +1183,13 @@ function render(data) {
     shop.appendChild(section);
 
     cat.products.forEach((p, pi) => {
-      if (p.soldOut) return;
       const el = document.getElementById(`${cat.id}-${pi + 1}`);
-      if (el) el.addEventListener('click', () => window.open(waLink(p.name, p.price), '_blank'));
+      if (!el) return;
+      const imgs = getImages(p);
+      const media = el.querySelector('.card-media');
+      if (imgs.length && media) media.addEventListener('click', () => openLightbox(p, imgs, hex));
+      const ob = el.querySelector('[data-order]');
+      if (ob) ob.addEventListener('click', () => window.open(waLink(p.name, p.price, imgs[0]), '_blank'));
     });
   });
 
