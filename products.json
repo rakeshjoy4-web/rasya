@@ -239,6 +239,13 @@
           "image": "images/product-mwd6bppc.jpg",
           "soldOut": false,
           "hidden": false
+        },
+        {
+          "name": "Dry Flowers & Gold Fo Keychain",
+          "price": 140,
+          "image": "images/product-mwd6elt8.jpg",
+          "soldOut": false,
+          "hidden": false
         }
       ]
     },
