@@ -207,8 +207,29 @@
         },
         {
           "name": "Shaker heart shape key chain ❤️",
-          "price": 270,
+          "price": 280,
           "image": "images/name-tag-bag-charm-mwd378ub.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Alphabet key chain",
+          "price": 160,
+          "image": "images/product-mwd4kbl2.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "Cat paw kawaii key chain - pink & red paw print",
+          "price": 270,
+          "image": "images/product-mwd3yugm.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "New stylish key chain",
+          "price": 170,
+          "image": "images/product-mwd4ltu1.jpg",
           "soldOut": false,
           "hidden": false
         }
