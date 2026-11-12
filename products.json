@@ -31,7 +31,8 @@
           "price": 300,
           "image": "images/galaxy-swirl-ring.jpg",
           "images": [
-            "images/galaxy-swirl-ring.jpg"
+            "images/galaxy-swirl-ring.jpg",
+            "images/galaxy-swirl-ring-mwdg0bu6jbo.jpg"
           ],
           "soldOut": false,
           "hidden": false
