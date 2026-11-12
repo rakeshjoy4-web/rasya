@@ -7,7 +7,7 @@
       "blurb": "Pendants, earrings and rings with flowers, foil and colour set in resin.",
       "products": [
         {
-          "name": "Ocean Wave Pendant",
+          "name": "Earings",
           "price": 170,
           "image": "images/ocean-wave-pendant-mwd178g4.jpg",
           "soldOut": false,
@@ -181,6 +181,13 @@
           "name": "Photo Charm Keychain",
           "price": 200,
           "image": "images/photo-charm-keychain.jpg",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "name": "M key chain",
+          "price": 120,
+          "image": "images/product-mwd1bdls.jpg",
           "soldOut": false,
           "hidden": false
         },
