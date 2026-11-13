@@ -221,10 +221,12 @@
           "hidden": false
         },
         {
-          "name": "H key chain",
+          "name": "Baby&paw key chain",
           "price": 250,
-          "image": "",
-          "images": [],
+          "image": "images/h-key-chain-mwex5rcgryz.jpg",
+          "images": [
+            "images/h-key-chain-mwex5rcgryz.jpg"
+          ],
           "soldOut": false,
           "hidden": false
         },
