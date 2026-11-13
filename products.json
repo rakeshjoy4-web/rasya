@@ -27,18 +27,8 @@
           "hidden": false
         },
         {
-          "name": "Galaxy Swirl Ring",
-          "price": 300,
-          "image": "images/galaxy-swirl-ring.jpg",
-          "images": [
-            "images/galaxy-swirl-ring.jpg"
-          ],
-          "soldOut": false,
-          "hidden": false
-        },
-        {
           "name": "Pressed Vine Drop Earrings",
-          "price": 400,
+          "price": 199,
           "image": "images/pressed-vine-drop-earrings.jpg",
           "images": [
             "images/pressed-vine-drop-earrings.jpg"
