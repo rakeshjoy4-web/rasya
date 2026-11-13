@@ -213,8 +213,10 @@
         {
           "name": "New stylish white M key chain",
           "price": 180,
-          "image": "",
-          "images": [],
+          "image": "images/new-stylish-white-m-key-chain-mwex0bnt15t.jpg",
+          "images": [
+            "images/new-stylish-white-m-key-chain-mwex0bnt15t.jpg"
+          ],
           "soldOut": false,
           "hidden": false
         },
