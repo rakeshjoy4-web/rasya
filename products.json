@@ -213,19 +213,17 @@
         {
           "name": "New stylish white M key chain",
           "price": 180,
-          "image": "images/new-stylish-white-m-key-chain-mwewz1hrxs7.jpg",
-          "images": [
-            "images/new-stylish-white-m-key-chain-mwewz1hrxs7.jpg"
-          ],
+          "image": "",
+          "images": [],
           "soldOut": false,
           "hidden": false
         },
         {
           "name": "H key chain",
           "price": 250,
-          "image": "images/h-key-chain-mwewzp2aacd.jpg",
+          "image": "images/h-key-chain-mwex015uii7.jpg",
           "images": [
-            "images/h-key-chain-mwewzp2aacd.jpg"
+            "images/h-key-chain-mwex015uii7.jpg"
           ],
           "soldOut": false,
           "hidden": false
