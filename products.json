@@ -334,10 +334,12 @@
           "hidden": false
         },
         {
-          "name": "Abstract Swirl Canvas",
+          "name": "Personalised baby first year resin wall clock",
           "price": 1800,
-          "image": "",
-          "images": [],
+          "image": "images/abstract-swirl-canvas-mwf845nqlix.jpg",
+          "images": [
+            "images/abstract-swirl-canvas-mwf845nqlix.jpg"
+          ],
           "soldOut": false,
           "hidden": false
         },
