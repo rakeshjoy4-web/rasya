@@ -344,10 +344,12 @@
           "hidden": false
         },
         {
-          "name": "Floral Resin Frame",
-          "price": 1100,
-          "image": "",
-          "images": [],
+          "name": "Floral Resin wall clock",
+          "price": 1999,
+          "image": "images/floral-resin-frame-mwf8rr6fb7b.jpg",
+          "images": [
+            "images/floral-resin-frame-mwf8rr6fb7b.jpg"
+          ],
           "soldOut": false,
           "hidden": false
         },
