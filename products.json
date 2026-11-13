@@ -223,10 +223,8 @@
         {
           "name": "H key chain",
           "price": 250,
-          "image": "images/h-key-chain-mwex015uii7.jpg",
-          "images": [
-            "images/h-key-chain-mwex015uii7.jpg"
-          ],
+          "image": "",
+          "images": [],
           "soldOut": false,
           "hidden": false
         },
