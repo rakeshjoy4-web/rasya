@@ -324,10 +324,12 @@
       "blurb": "Statement panels and frames for a wall that needs one bold, poured piece.",
       "products": [
         {
-          "name": "Ocean Sunset Wall Panel",
+          "name": "Red luxury stylish wall clock",
           "price": 2200,
-          "image": "",
-          "images": [],
+          "image": "images/ocean-sunset-wall-panel-mwf7y1m1tig.jpg",
+          "images": [
+            "images/ocean-sunset-wall-panel-mwf7y1m1tig.jpg"
+          ],
           "soldOut": false,
           "hidden": false
         },
