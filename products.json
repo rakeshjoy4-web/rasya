@@ -125,10 +125,16 @@
           "hidden": false
         },
         {
-          "name": "Memory Photo Coaster",
-          "price": 599,
-          "image": "",
-          "images": [],
+          "name": "Epoxy Resin Wall Frame | Unique home decor | Housewarming gift - Ocean Theme - Frame",
+          "price": 1699,
+          "image": "images/memory-photo-coaster-mwexd8osqn4.jpg",
+          "images": [
+            "images/memory-photo-coaster-mwexd8osqn4.jpg",
+            "images/memory-photo-coaster-mwexdjfxbm9.jpg",
+            "images/memory-photo-coaster-mwexdjicx2l.jpg",
+            "images/memory-photo-coaster-mwexdjl99aq.jpg",
+            "images/memory-photo-coaster-mwexdjoblr0.jpg"
+          ],
           "soldOut": false,
           "hidden": false
         },
