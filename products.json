@@ -55,16 +55,6 @@
           ],
           "soldOut": false,
           "hidden": false
-        },
-        {
-          "name": "Product",
-          "price": 300,
-          "image": "images/product-mwd1gyy2.jpg",
-          "images": [
-            "images/product-mwd1gyy2.jpg"
-          ],
-          "soldOut": false,
-          "hidden": false
         }
       ]
     },
