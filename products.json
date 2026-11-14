@@ -28,7 +28,7 @@
         },
         {
           "name": "Pressed Vine Drop Earrings",
-          "price": 150,
+          "price": 160,
           "image": "images/pressed-vine-drop-earrings.jpg",
           "images": [
             "images/pressed-vine-drop-earrings.jpg"
@@ -38,7 +38,7 @@
         },
         {
           "name": "Rose Petal Earrings",
-          "price": 180,
+          "price": 150,
           "image": "images/rose-petal-earrings.jpg",
           "images": [
             "images/rose-petal-earrings.jpg"
@@ -48,7 +48,7 @@
         },
         {
           "name": "Gold Flake Drop Earrings",
-          "price": 180,
+          "price": 150,
           "image": "images/gold-flake-drop-earrings.jpg",
           "images": [
             "images/gold-flake-drop-earrings.jpg"
