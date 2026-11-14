@@ -423,9 +423,12 @@
       "products": [
         {
           "name": "Ocean Wave Bangle",
-          "price": 400,
-          "image": "",
-          "images": [],
+          "price": 220,
+          "image": "images/ocean-wave-bangle-mwfqazhtnsg.jpg",
+          "images": [
+            "images/ocean-wave-bangle-mwfqazhtnsg.jpg",
+            "images/ocean-wave-bangle-mwfqazk4w5e.jpg"
+          ],
           "soldOut": false,
           "hidden": false
         },
@@ -470,6 +473,13 @@
           "hidden": false
         }
       ]
+    },
+    {
+      "id": "new-category",
+      "name": "New category",
+      "hex": "#FF3E80",
+      "blurb": "",
+      "products": []
     }
   ]
 }
