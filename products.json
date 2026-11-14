@@ -424,9 +424,8 @@
         {
           "name": "Ocean Wave Bangle",
           "price": 220,
-          "image": "images/ocean-wave-bangle-mwfqazhtnsg.jpg",
+          "image": "images/ocean-wave-bangle-mwfqazk4w5e.jpg",
           "images": [
-            "images/ocean-wave-bangle-mwfqazhtnsg.jpg",
             "images/ocean-wave-bangle-mwfqazk4w5e.jpg"
           ],
           "soldOut": false,
@@ -435,9 +434,9 @@
         {
           "name": "Dried Flower bangles",
           "price": 370,
-          "image": "images/dried-flower-bracelet-mwfqe1ld3sj.jpg",
+          "image": "images/dried-flower-bangles-mwfqght78hy.jpg",
           "images": [
-            "images/dried-flower-bracelet-mwfqe1ld3sj.jpg"
+            "images/dried-flower-bangles-mwfqght78hy.jpg"
           ],
           "soldOut": false,
           "hidden": false
