@@ -433,10 +433,12 @@
           "hidden": false
         },
         {
-          "name": "Dried Flower Bracelet",
-          "price": 350,
-          "image": "",
-          "images": [],
+          "name": "Dried Flower bangles",
+          "price": 370,
+          "image": "images/dried-flower-bracelet-mwfqe1ld3sj.jpg",
+          "images": [
+            "images/dried-flower-bracelet-mwfqe1ld3sj.jpg"
+          ],
           "soldOut": false,
           "hidden": false
         },
